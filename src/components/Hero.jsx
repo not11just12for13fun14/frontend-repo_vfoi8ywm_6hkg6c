@@ -1,6 +1,16 @@
+import { useMemo } from 'react'
 import { motion } from 'framer-motion'
+import Spline from '@splinetool/react-spline'
 
 export default function Hero() {
+  const sceneUrl = useMemo(() => {
+    // Prefer env var if provided, otherwise fall back to a public demo scene
+    return (
+      import.meta.env.VITE_SPLINE_SCENE_URL ||
+      'https://prod.spline.design/6YVJv9YxAeTfLZNV/scene.splinecode'
+    )
+  }, [])
+
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 -z-10 opacity-70">
@@ -54,16 +64,10 @@ export default function Hero() {
           className="relative aspect-square rounded-3xl bg-gradient-to-br from-white to-white/60 shadow-xl ring-1 ring-slate-900/5 p-4"
         >
           <div className="absolute inset-0 pointer-events-none rounded-3xl bg-gradient-to-tr from-pink-100/40 via-transparent to-blue-100/40" />
-          <div className="w-full h-full rounded-2xl overflow-hidden grid place-items-center">
-            <div className="relative w-40 h-40 md:w-56 md:h-56">
-              <motion.div
-                className="absolute inset-0 rounded-2xl bg-gradient-to-br from-pink-200 to-violet-200"
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 16, ease: 'linear' }}
-              />
-              <div className="absolute inset-6 rounded-xl bg-white/80 backdrop-blur shadow-md grid place-items-center">
-                <span className="text-slate-700 text-sm">3D Space</span>
-              </div>
+          <div className="w-full h-full rounded-2xl overflow-hidden relative">
+            {/* Spline 3D scene */}
+            <div className="absolute inset-0">
+              <Spline scene={sceneUrl} />
             </div>
           </div>
         </motion.div>
